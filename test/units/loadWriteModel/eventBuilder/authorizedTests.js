@@ -3,8 +3,8 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const authorized = require('../../../lib/loadWriteModel/eventBuilder/authorized'),
-      buildEvent = require('../../helpers/buildEvent');
+const authorized = require('../../../../lib/loadWriteModel/eventBuilder/authorized'),
+      buildEvent = require('../../../helpers/buildEvent');
 
 suite('authorized', () => {
   test('is a function.', done => {

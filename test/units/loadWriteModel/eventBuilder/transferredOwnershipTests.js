@@ -3,8 +3,8 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const buildEvent = require('../../helpers/buildEvent'),
-      transferredOwnership = require('../../../lib/loadWriteModel/eventBuilder/transferredOwnership');
+const buildEvent = require('../../../helpers/buildEvent'),
+      transferredOwnership = require('../../../../lib/loadWriteModel/eventBuilder/transferredOwnership');
 
 suite('transferredOwnership', () => {
   test('is a function.', done => {

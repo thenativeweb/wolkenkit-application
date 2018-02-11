@@ -4,7 +4,7 @@ wolkenkit-application manages wolkenkit applications on disk.
 
 ## Installation
 
-```bash
+```shell
 $ npm install wolkenkit-application
 ```
 
@@ -19,7 +19,7 @@ const WolkenkitApplication = require('wolkenkit-application');
 Then call the `WolkenkitApplication` constructor function and specify the fully qualified directory name of a wolkenkit application.
 
 ```javascript
-const app = new WolkenkitApplication(path.join(__dirname, '...'));
+const app = new WolkenkitApplication('...');
 ```
 
 Now you can get the application's configuration by using the `configuration.readModel`, `configuration.writeModel` and `configuration.flows` properties.
@@ -39,13 +39,13 @@ Alternatively, if you need access to the source code of the application, use the
 
 To build this module use [roboter](https://www.npmjs.com/package/roboter).
 
-```bash
+```shell
 $ bot
 ```
 
 ## License
 
-Copyright (c) 2015-2017 the native web.
+Copyright (c) 2015-2018 the native web.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

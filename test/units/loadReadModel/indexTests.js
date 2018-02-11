@@ -4,7 +4,7 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const loadReadModel = require('../../lib/loadReadModel');
+const loadReadModel = require('../../../lib/loadReadModel');
 
 suite('loadReadModel', () => {
   test('is a function.', done => {
@@ -15,12 +15,12 @@ suite('loadReadModel', () => {
   test('throws an error if no read model directory is given.', done => {
     assert.that(() => {
       loadReadModel();
-    }).is.throwing('Read model directory is missing.');
+    }).is.throwing('Cannot destructure property `loadSource` of \'undefined\' or \'null\'.');
     done();
   });
 
   test('returns the read model configuration.', done => {
-    const readModel = loadReadModel(path.join(__dirname, '..', 'sampleApp', 'server', 'readModel'));
+    const readModel = loadReadModel(path.join(__dirname, '..', '..', 'sampleApp', 'server', 'readModel'), { loadSource: false });
 
     assert.that(readModel).is.equalTo({
       lists: {
@@ -31,7 +31,7 @@ suite('loadReadModel', () => {
   });
 
   test('returns the read model with source code if requested.', done => {
-    const readModel = loadReadModel(path.join(__dirname, '..', 'sampleApp', 'server', 'readModel'), { loadSource: true });
+    const readModel = loadReadModel(path.join(__dirname, '..', '..', 'sampleApp', 'server', 'readModel'), { loadSource: true });
 
     assert.that(readModel.lists.peerGroups).is.ofType('object');
     assert.that(readModel.lists.peerGroups.fields).is.ofType('object');

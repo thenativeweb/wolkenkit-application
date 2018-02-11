@@ -4,7 +4,7 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const loadFlows = require('../../lib/loadFlows');
+const loadFlows = require('../../../lib/loadFlows');
 
 suite('loadFlows', () => {
   test('is a function.', done => {
@@ -15,12 +15,12 @@ suite('loadFlows', () => {
   test('throws an error if no flows directory is given.', done => {
     assert.that(() => {
       loadFlows();
-    }).is.throwing('Flows directory is missing.');
+    }).is.throwing('Cannot destructure property `loadSource` of \'undefined\' or \'null\'.');
     done();
   });
 
   test('returns the flows configuration.', done => {
-    const flows = loadFlows(path.join(__dirname, '..', 'sampleApp', 'server', 'flows'));
+    const flows = loadFlows(path.join(__dirname, '..', '..', 'sampleApp', 'server', 'flows'), { loadSource: false });
 
     assert.that(flows).is.equalTo({
       stateless: {},
@@ -30,7 +30,7 @@ suite('loadFlows', () => {
   });
 
   test('returns the flows with source code if requested.', done => {
-    const flows = loadFlows(path.join(__dirname, '..', 'sampleApp', 'server', 'flows'), { loadSource: true });
+    const flows = loadFlows(path.join(__dirname, '..', '..', 'sampleApp', 'server', 'flows'), { loadSource: true });
 
     assert.that(flows.stateless).is.ofType('object');
     assert.that(flows.stateless.when).is.ofType('object');

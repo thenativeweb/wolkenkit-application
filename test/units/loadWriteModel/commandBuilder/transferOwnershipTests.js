@@ -3,8 +3,8 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const buildCommand = require('../../helpers/buildCommand'),
-      transferOwnership = require('../../../lib/loadWriteModel/commandBuilder/transferOwnership');
+const buildCommand = require('../../../helpers/buildCommand'),
+      transferOwnership = require('../../../../lib/loadWriteModel/commandBuilder/transferOwnership');
 
 suite('transferOwnership', () => {
   test('is a function.', done => {

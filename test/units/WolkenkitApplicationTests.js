@@ -4,13 +4,13 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const WolkenkitApplication = require('../lib/WolkenkitApplication');
+const WolkenkitApplication = require('../../lib/WolkenkitApplication');
 
 suite('WolkenkitApplication', () => {
   let application;
 
   suiteSetup(() => {
-    application = new WolkenkitApplication(path.join(__dirname, 'sampleApp'));
+    application = new WolkenkitApplication(path.join(__dirname, '..', 'sampleApp'));
   });
 
   test('is a function.', done => {
@@ -28,7 +28,7 @@ suite('WolkenkitApplication', () => {
   });
 
   test('returns the same instance if called twice with the same application directory.', done => {
-    assert.that(new WolkenkitApplication(path.join(__dirname, 'sampleApp'))).is.sameAs(application);
+    assert.that(new WolkenkitApplication(path.join(__dirname, '..', 'sampleApp'))).is.sameAs(application);
     done();
   });
 

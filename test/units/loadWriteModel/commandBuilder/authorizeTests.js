@@ -3,8 +3,8 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const authorize = require('../../../lib/loadWriteModel/commandBuilder/authorize'),
-      buildCommand = require('../../helpers/buildCommand');
+const authorize = require('../../../../lib/loadWriteModel/commandBuilder/authorize'),
+      buildCommand = require('../../../helpers/buildCommand');
 
 suite('authorize', () => {
   test('is a function.', done => {
