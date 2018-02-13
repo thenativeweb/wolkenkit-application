@@ -1,13 +1,11 @@
 'use strict';
 
-var authorize = function authorize(aggregateInstance, command, mark) {
+var authorize = function authorize(aggregateInstance, command) {
   try {
     aggregateInstance.authorize(command.data);
-  } catch (err) {
-    return mark.asRejected(err.message);
+  } catch (ex) {
+    return command.reject(ex.message);
   }
-
-  mark.asDone();
 };
 
 module.exports = authorize;

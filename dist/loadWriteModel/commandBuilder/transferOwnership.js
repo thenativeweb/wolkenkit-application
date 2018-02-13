@@ -1,13 +1,11 @@
 'use strict';
 
-var transferOwnership = function transferOwnership(aggregateInstance, command, mark) {
+var transferOwnership = function transferOwnership(aggregateInstance, command) {
   try {
     aggregateInstance.transferOwnership(command.data);
-  } catch (err) {
-    return mark.asRejected(err.message);
+  } catch (ex) {
+    return command.reject(ex.message);
   }
-
-  mark.asDone();
 };
 
 module.exports = transferOwnership;

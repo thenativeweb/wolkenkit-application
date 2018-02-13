@@ -1,5 +1,11 @@
 'use strict';
 
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var fs = require('fs'),
     path = require('path');
 
@@ -12,7 +18,7 @@ var loadCommands = function loadCommands(aggregateFile) {
   var commands = {};
 
   /* eslint-disable global-require */
-  Object.keys(require(aggregateFile).commands).forEach(function (command) {
+  (0, _keys2.default)(require(aggregateFile).commands).forEach(function (command) {
     /* eslint-enable global-require */
     commands[command] = {};
   });
@@ -24,7 +30,7 @@ var loadEvents = function loadEvents(aggregateFile) {
   var events = {};
 
   /* eslint-disable global-require */
-  Object.keys(require(aggregateFile).events).forEach(function (event) {
+  (0, _keys2.default)(require(aggregateFile).events).forEach(function (event) {
     /* eslint-enable global-require */
     events[event] = {};
   });
@@ -98,22 +104,22 @@ var attachAuthorizationInitialState = function attachAuthorizationInitialState(w
     return;
   }
 
-  Object.keys(writeModel).forEach(function (contextName) {
+  (0, _keys2.default)(writeModel).forEach(function (contextName) {
     var context = writeModel[contextName];
 
-    Object.keys(context).forEach(function (aggregateName) {
+    (0, _keys2.default)(context).forEach(function (aggregateName) {
       var aggregate = context[aggregateName],
           commands = {},
           events = {};
 
-      Object.keys(aggregate.commands).forEach(function (commandName) {
+      (0, _keys2.default)(aggregate.commands).forEach(function (commandName) {
         commands[commandName] = {
           forAuthenticated: false,
           forPublic: false
         };
       });
 
-      Object.keys(aggregate.events).forEach(function (eventName) {
+      (0, _keys2.default)(aggregate.events).forEach(function (eventName) {
         events[eventName] = {
           forAuthenticated: false,
           forPublic: false
@@ -136,10 +142,10 @@ var attachTransferOwnership = function attachTransferOwnership(writeModel, _ref4
   var _ref4$loadSource = _ref4.loadSource,
       loadSource = _ref4$loadSource === undefined ? false : _ref4$loadSource;
 
-  Object.keys(writeModel).forEach(function (contextName) {
+  (0, _keys2.default)(writeModel).forEach(function (contextName) {
     var context = writeModel[contextName];
 
-    Object.keys(context).forEach(function (aggregateName) {
+    (0, _keys2.default)(context).forEach(function (aggregateName) {
       var aggregate = context[aggregateName];
 
       aggregate.commands.transferOwnership = {};
@@ -157,10 +163,10 @@ var attachAuthorize = function attachAuthorize(writeModel, _ref5) {
   var _ref5$loadSource = _ref5.loadSource,
       loadSource = _ref5$loadSource === undefined ? false : _ref5$loadSource;
 
-  Object.keys(writeModel).forEach(function (contextName) {
+  (0, _keys2.default)(writeModel).forEach(function (contextName) {
     var context = writeModel[contextName];
 
-    Object.keys(context).forEach(function (aggregateName) {
+    (0, _keys2.default)(context).forEach(function (aggregateName) {
       var aggregate = context[aggregateName];
 
       aggregate.commands.authorize = {};
@@ -175,13 +181,13 @@ var attachAuthorize = function attachAuthorize(writeModel, _ref5) {
 };
 
 var attachFailedAndRejectedEvents = function attachFailedAndRejectedEvents(writeModel) {
-  Object.keys(writeModel).forEach(function (contextName) {
+  (0, _keys2.default)(writeModel).forEach(function (contextName) {
     var context = writeModel[contextName];
 
-    Object.keys(context).forEach(function (aggregateName) {
+    (0, _keys2.default)(context).forEach(function (aggregateName) {
       var aggregate = context[aggregateName];
 
-      Object.keys(aggregate.commands).forEach(function (commandName) {
+      (0, _keys2.default)(aggregate.commands).forEach(function (commandName) {
         aggregate.events[commandName + 'Failed'] = {};
         aggregate.events[commandName + 'Rejected'] = {};
       });
