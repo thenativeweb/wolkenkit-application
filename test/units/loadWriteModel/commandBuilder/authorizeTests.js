@@ -28,14 +28,15 @@ suite('authorize', () => {
         join: { forPublic: true }
       }
     });
-    const mark = {
-      asDone () {}
+
+    command.reject = function (reason) {
+      throw new Error(reason);
     };
 
-    authorize(aggregate, command, mark);
+    authorize(aggregate, command);
   });
 
-  test('marks command as rejected if authorize throws an error.', done => {
+  test('rejects the command if authorize throws an error.', done => {
     const aggregate = {
       authorize () {
         throw new Error('foo');
@@ -44,29 +45,32 @@ suite('authorize', () => {
     const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
       to: 'Jane Doe'
     });
-    const mark = {
-      asRejected (reason) {
-        assert.that(reason).is.equalTo('foo');
-        done();
-      }
+
+    command.reject = function (reason) {
+      assert.that(reason).is.equalTo('foo');
+      done();
     };
 
-    authorize(aggregate, command, mark);
+    authorize(aggregate, command);
   });
 
-  test('marks command as done if authorize succeeds.', done => {
+  test('does not reject the command if authorize succeeds.', done => {
     const aggregate = {
       authorize () {}
     };
     const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
       to: 'Jane Doe'
     });
-    const mark = {
-      asDone () {
-        done();
-      }
+
+    let wasCalled = false;
+
+    command.reject = function () {
+      wasCalled = true;
     };
 
-    authorize(aggregate, command, mark);
+    authorize(aggregate, command);
+
+    assert.that(wasCalled).is.false();
+    done();
   });
 });

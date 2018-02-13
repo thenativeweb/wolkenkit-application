@@ -23,14 +23,15 @@ suite('transferOwnership', () => {
     const command = buildCommand('planning', 'peerGroup', uuid(), 'transferOwnership', {
       to: newOwnerId
     });
-    const mark = {
-      asDone () {}
+
+    command.reject = function (reason) {
+      throw new Error(reason);
     };
 
-    transferOwnership(topic, command, mark);
+    transferOwnership(topic, command);
   });
 
-  test('marks command as rejected if transferOwnership throws an error.', done => {
+  test('rejects the command if transferOwnership throws an error.', done => {
     const topic = {
       transferOwnership () {
         throw new Error('foo');
@@ -39,29 +40,32 @@ suite('transferOwnership', () => {
     const command = buildCommand('planning', 'peerGroup', uuid(), 'transferOwnership', {
       to: 'Jane Doe'
     });
-    const mark = {
-      asRejected (reason) {
-        assert.that(reason).is.equalTo('foo');
-        done();
-      }
+
+    command.reject = function (reason) {
+      assert.that(reason).is.equalTo('foo');
+      done();
     };
 
-    transferOwnership(topic, command, mark);
+    transferOwnership(topic, command);
   });
 
-  test('marks command as done if transferOwnership succeeds.', done => {
+  test('does not reject the command if transferOwnership succeeds.', done => {
     const topic = {
       transferOwnership () {}
     };
     const command = buildCommand('planning', 'peerGroup', uuid(), 'transferOwnership', {
       to: 'Jane Doe'
     });
-    const mark = {
-      asDone () {
-        done();
-      }
+
+    let wasCalled = false;
+
+    command.reject = function () {
+      wasCalled = true;
     };
 
-    transferOwnership(topic, command, mark);
+    transferOwnership(topic, command);
+
+    assert.that(wasCalled).is.false();
+    done();
   });
 });
