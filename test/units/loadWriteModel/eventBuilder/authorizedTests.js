@@ -3,29 +3,34 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const authorized = require('../../../../lib/loadWriteModel/eventBuilder/authorized'),
-      buildEvent = require('../../../helpers/buildEvent');
+const authorized = require('../../../../src/loadWriteModel/eventBuilder/authorized'),
+      buildEvent = require('../../../shared/buildEvent');
 
 suite('authorized', () => {
-  test('is a function.', done => {
+  test('is a function.', async () => {
     assert.that(authorized).is.ofType('function');
-    done();
   });
 
-  test('sets the authorization options.', done => {
-    const peerGroup = {
-      setState (state) {
-        assert.that(state).is.equalTo({
-          isAuthorized: { commands: { join: { forAuthenticated: true }}}
+  test('sets the authorization options.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const peerGroup = {
+          setState (state) {
+            assert.that(state).is.equalTo({
+              isAuthorized: { commands: { join: { forAuthenticated: true }}}
+            });
+            resolve();
+          }
+        };
+
+        const authorizedEvent = buildEvent('planning', 'peerGroup', uuid(), 'authorized', {
+          commands: { join: { forAuthenticated: true }}
         });
-        done();
+
+        authorized(peerGroup, authorizedEvent);
+      } catch (ex) {
+        reject(ex);
       }
-    };
-
-    const authorizedEvent = buildEvent('planning', 'peerGroup', uuid(), 'authorized', {
-      commands: { join: { forAuthenticated: true }}
     });
-
-    authorized(peerGroup, authorizedEvent);
   });
 });

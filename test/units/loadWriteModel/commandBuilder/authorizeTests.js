@@ -3,58 +3,69 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const authorize = require('../../../../lib/loadWriteModel/commandBuilder/authorize'),
-      buildCommand = require('../../../helpers/buildCommand');
+const authorize = require('../../../../src/loadWriteModel/commandBuilder/authorize'),
+      buildCommand = require('../../../shared/buildCommand');
 
 suite('authorize', () => {
-  test('is a function.', done => {
+  test('is a function.', async () => {
     assert.that(authorize).is.ofType('function');
-    done();
   });
 
-  test('calls authorize on the aggregate.', done => {
-    const aggregate = {
-      authorize (data) {
-        assert.that(data).is.equalTo({
+  test('calls authorize on the aggregate.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const aggregate = {
+          authorize (data) {
+            assert.that(data).is.equalTo({
+              commands: {
+                join: { forPublic: true }
+              }
+            });
+            resolve();
+          }
+        };
+        const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
           commands: {
             join: { forPublic: true }
           }
         });
-        done();
-      }
-    };
-    const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
-      commands: {
-        join: { forPublic: true }
+
+        command.reject = function (reason) {
+          throw new Error(reason);
+        };
+
+        authorize(aggregate, command);
+      } catch (ex) {
+        reject(ex);
       }
     });
-
-    command.reject = function (reason) {
-      throw new Error(reason);
-    };
-
-    authorize(aggregate, command);
   });
 
-  test('rejects the command if authorize throws an error.', done => {
-    const aggregate = {
-      authorize () {
-        throw new Error('foo');
+  test('rejects the command if authorize throws an error.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const aggregate = {
+          authorize () {
+            throw new Error('foo');
+          }
+        };
+        const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
+          to: 'Jane Doe'
+        });
+
+        command.reject = function (reason) {
+          assert.that(reason).is.equalTo('foo');
+          resolve();
+        };
+
+        authorize(aggregate, command);
+      } catch (ex) {
+        reject(ex);
       }
-    };
-    const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
-      to: 'Jane Doe'
     });
-
-    command.reject = function (reason) {
-      assert.that(reason).is.equalTo('foo');
-      done();
-    };
-
-    authorize(aggregate, command);
   });
 
-  test('does not reject the command if authorize succeeds.', done => {
+  test('does not reject the command if authorize succeeds.', async () => {
     const aggregate = {
       authorize () {}
     };
@@ -71,6 +82,5 @@ suite('authorize', () => {
     authorize(aggregate, command);
 
     assert.that(wasCalled).is.false();
-    done();
   });
 });

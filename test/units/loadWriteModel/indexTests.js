@@ -4,23 +4,21 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const loadWriteModel = require('../../../lib/loadWriteModel');
+const loadWriteModel = require('../../../src/loadWriteModel');
 
 suite('loadWriteModel', () => {
-  test('is a function.', done => {
+  test('is a function.', async () => {
     assert.that(loadWriteModel).is.ofType('function');
-    done();
   });
 
-  test('throws an error if no write model directory is given.', done => {
+  test('throws an error if no write model directory is given.', async () => {
     assert.that(() => {
       loadWriteModel();
     }).is.throwing('Cannot destructure property `loadSource` of \'undefined\' or \'null\'.');
-    done();
   });
 
-  test('returns the write model configuration.', done => {
-    const writeModel = loadWriteModel(path.join(__dirname, '..', '..', 'sampleApp', 'server', 'writeModel'), { loadSource: false });
+  test('returns the write model configuration.', async () => {
+    const writeModel = loadWriteModel(path.join(__dirname, '..', '..', 'shared', 'sampleApp', 'server', 'writeModel'), { loadSource: false });
 
     assert.that(writeModel).is.equalTo({
       planning: {
@@ -48,11 +46,10 @@ suite('loadWriteModel', () => {
         }
       }
     });
-    done();
   });
 
-  test('returns the write model with source code if requested.', done => {
-    const writeModel = loadWriteModel(path.join(__dirname, '..', '..', 'sampleApp', 'server', 'writeModel'), { loadSource: true });
+  test('returns the write model with source code if requested.', async () => {
+    const writeModel = loadWriteModel(path.join(__dirname, '..', '..', 'shared', 'sampleApp', 'server', 'writeModel'), { loadSource: true });
 
     assert.that(writeModel.planning.peerGroup).is.ofType('object');
     assert.that(writeModel.planning.peerGroup.commands).is.ofType('object');
@@ -61,7 +58,5 @@ suite('loadWriteModel', () => {
     assert.that(writeModel.planning.peerGroup.events).is.ofType('object');
     assert.that(writeModel.planning.peerGroup.events.started).is.ofType('function');
     assert.that(writeModel.planning.peerGroup.events.joined).is.ofType('function');
-
-    done();
   });
 });

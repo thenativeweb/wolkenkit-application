@@ -3,29 +3,34 @@
 const assert = require('assertthat'),
       uuid = require('uuidv4');
 
-const buildEvent = require('../../../helpers/buildEvent'),
-      transferredOwnership = require('../../../../lib/loadWriteModel/eventBuilder/transferredOwnership');
+const buildEvent = require('../../../shared/buildEvent'),
+      transferredOwnership = require('../../../../src/loadWriteModel/eventBuilder/transferredOwnership');
 
 suite('transferredOwnership', () => {
-  test('is a function.', done => {
+  test('is a function.', async () => {
     assert.that(transferredOwnership).is.ofType('function');
-    done();
   });
 
-  test('sets the new owner.', done => {
-    const peerGroup = {
-      setState (state) {
-        assert.that(state).is.equalTo({
-          isAuthorized: { owner: 'Jane Doe' }
+  test('sets the new owner.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const peerGroup = {
+          setState (state) {
+            assert.that(state).is.equalTo({
+              isAuthorized: { owner: 'Jane Doe' }
+            });
+            resolve();
+          }
+        };
+
+        const transferredOwnershipEvent = buildEvent('planning', 'peerGroup', uuid(), 'transferredOwnership', {
+          to: 'Jane Doe'
         });
-        done();
+
+        transferredOwnership(peerGroup, transferredOwnershipEvent);
+      } catch (ex) {
+        reject(ex);
       }
-    };
-
-    const transferredOwnershipEvent = buildEvent('planning', 'peerGroup', uuid(), 'transferredOwnership', {
-      to: 'Jane Doe'
     });
-
-    transferredOwnership(peerGroup, transferredOwnershipEvent);
   });
 });

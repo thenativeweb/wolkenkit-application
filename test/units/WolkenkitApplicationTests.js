@@ -4,53 +4,48 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const WolkenkitApplication = require('../../lib/WolkenkitApplication');
+const WolkenkitApplication = require('../../src/WolkenkitApplication');
 
 suite('WolkenkitApplication', () => {
   let application;
 
   suiteSetup(() => {
-    application = new WolkenkitApplication(path.join(__dirname, '..', 'sampleApp'));
+    application = new WolkenkitApplication(path.join(__dirname, '..', 'shared', 'sampleApp'));
   });
 
-  test('is a function.', done => {
+  test('is a function.', async () => {
     assert.that(WolkenkitApplication).is.ofType('function');
-    done();
   });
 
-  test('throws an error if application directory is missing.', done => {
+  test('throws an error if application directory is missing.', async () => {
     assert.that(() => {
       /* eslint-disable no-new */
       new WolkenkitApplication();
       /* eslint-enable no-new */
     }).is.throwing('Application directory is missing.');
-    done();
   });
 
-  test('returns the same instance if called twice with the same application directory.', done => {
-    assert.that(new WolkenkitApplication(path.join(__dirname, '..', 'sampleApp'))).is.sameAs(application);
-    done();
+  test('returns the same instance if called twice with the same application directory.', async () => {
+    assert.that(new WolkenkitApplication(path.join(__dirname, '..', 'shared', 'sampleApp'))).is.sameAs(application);
   });
 
   suite('configuration', () => {
-    test('is an object.', done => {
+    test('is an object.', async () => {
       assert.that(application.configuration).is.ofType('object');
-      done();
     });
 
     suite('readModel', () => {
-      test('returns the read model configuration.', done => {
+      test('returns the read model configuration.', async () => {
         assert.that(application.configuration.readModel).is.equalTo({
           lists: {
             peerGroups: {}
           }
         });
-        done();
       });
     });
 
     suite('writeModel', () => {
-      test('returns the write model configuration.', done => {
+      test('returns the write model configuration.', async () => {
         assert.that(application.configuration.writeModel).is.equalTo({
           planning: {
             peerGroup: {
@@ -77,46 +72,40 @@ suite('WolkenkitApplication', () => {
             }
           }
         });
-        done();
       });
     });
 
     suite('flows', () => {
-      test('returns the flows configuration.', done => {
+      test('returns the flows configuration.', async () => {
         assert.that(application.configuration.flows).is.equalTo({
           stateful: {},
           stateless: {}
         });
-        done();
       });
     });
   });
 
   suite('readModel', () => {
-    test('is an object.', done => {
+    test('is an object.', async () => {
       assert.that(application.readModel).is.ofType('object');
-      done();
     });
 
-    test('returns the read model with source code.', done => {
+    test('returns the read model with source code.', async () => {
       assert.that(application.readModel.lists.peerGroups).is.ofType('object');
       assert.that(application.readModel.lists.peerGroups.fields).is.ofType('object');
       assert.that(application.readModel.lists.peerGroups.fields.foo).is.equalTo('bar');
-      assert.that(application.readModel.lists.peerGroups.when).is.ofType('object');
-      assert.that(application.readModel.lists.peerGroups.when['planning.peerGroup.started']).is.ofType('function');
-      assert.that(application.readModel.lists.peerGroups.when['planning.peerGroup.joined']).is.ofType('function');
-
-      done();
+      assert.that(application.readModel.lists.peerGroups.projections).is.ofType('object');
+      assert.that(application.readModel.lists.peerGroups.projections['planning.peerGroup.started']).is.ofType('function');
+      assert.that(application.readModel.lists.peerGroups.projections['planning.peerGroup.joined']).is.ofType('function');
     });
   });
 
   suite('writeModel', () => {
-    test('is an object.', done => {
+    test('is an object.', async () => {
       assert.that(application.writeModel).is.ofType('object');
-      done();
     });
 
-    test('returns the write model with source code.', done => {
+    test('returns the write model with source code.', async () => {
       assert.that(application.writeModel.planning.peerGroup).is.ofType('object');
       assert.that(application.writeModel.planning.peerGroup.commands).is.ofType('object');
       assert.that(application.writeModel.planning.peerGroup.commands.start).is.ofType('function');
@@ -124,33 +113,32 @@ suite('WolkenkitApplication', () => {
       assert.that(application.writeModel.planning.peerGroup.events).is.ofType('object');
       assert.that(application.writeModel.planning.peerGroup.events.started).is.ofType('function');
       assert.that(application.writeModel.planning.peerGroup.events.joined).is.ofType('function');
-
-      done();
     });
   });
 
   suite('flows', () => {
-    test('is an object.', done => {
+    test('is an object.', async () => {
       assert.that(application.flows).is.ofType('object');
-      done();
     });
 
-    test('returns the flows with source code.', done => {
+    test('returns the flows with source code.', async () => {
       assert.that(application.flows.stateless).is.ofType('object');
-      assert.that(application.flows.stateless.when).is.ofType('object');
-      assert.that(application.flows.stateless.when['planning.peerGroup.started']).is.ofType('function');
-      assert.that(application.flows.stateless.when['planning.peerGroup.joined']).is.ofType('function');
+      assert.that(application.flows.stateless.reactions).is.ofType('object');
+      assert.that(application.flows.stateless.reactions['planning.peerGroup.started']).is.ofType('function');
+      assert.that(application.flows.stateless.reactions['planning.peerGroup.joined']).is.ofType('function');
 
       assert.that(application.flows.stateful).is.ofType('object');
       assert.that(application.flows.stateful.identity).is.ofType('object');
       assert.that(application.flows.stateful.identity['planning.peerGroup.started']).is.ofType('function');
       assert.that(application.flows.stateful.identity['planning.peerGroup.joined']).is.ofType('function');
-      assert.that(application.flows.stateful.initialState).is.equalTo({ foo: 'bar' });
-      assert.that(application.flows.stateful.when).is.ofType('object');
-      assert.that(application.flows.stateful.when['planning.peerGroup.started']).is.ofType('function');
-      assert.that(application.flows.stateful.when['planning.peerGroup.joined']).is.ofType('function');
-
-      done();
+      assert.that(application.flows.stateful.initialState).is.equalTo({ is: 'pristine' });
+      assert.that(application.flows.stateful.transitions).is.ofType('object');
+      assert.that(application.flows.stateful.transitions.pristine).is.ofType('object');
+      assert.that(application.flows.stateful.transitions.pristine['planning.peerGroup.started']).is.ofType('function');
+      assert.that(application.flows.stateful.transitions.pristine['planning.peerGroup.joined']).is.ofType('function');
+      assert.that(application.flows.stateful.reactions).is.ofType('object');
+      assert.that(application.flows.stateful.reactions.pristine).is.ofType('object');
+      assert.that(application.flows.stateful.reactions.pristine['another-state']).is.ofType('function');
     });
   });
 });

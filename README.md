@@ -40,7 +40,7 @@ Alternatively, if you need access to the source code of the application, use the
 To build this module use [roboter](https://www.npmjs.com/package/roboter).
 
 ```shell
-$ bot
+$ npx roboter
 ```
 
 ## License
