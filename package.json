@@ -18,6 +18,7 @@
   ],
   "main": "dist/WolkenkitApplication.js",
   "dependencies": {
+    "humanize-string": "1.0.2",
     "lodash": "4.17.10",
     "require-dir": "1.0.0"
   },
