@@ -15,6 +15,10 @@ suite('authorize', () => {
     await new Promise((resolve, reject) => {
       try {
         const aggregate = {
+          exists () {
+            return true;
+          },
+
           authorize (data) {
             assert.that(data).is.equalTo({
               commands: {
@@ -45,6 +49,10 @@ suite('authorize', () => {
     await new Promise((resolve, reject) => {
       try {
         const aggregate = {
+          exists () {
+            return true;
+          },
+
           authorize () {
             throw new Error('foo');
           }
@@ -67,6 +75,10 @@ suite('authorize', () => {
 
   test('does not reject the command if authorize succeeds.', async () => {
     const aggregate = {
+      exists () {
+        return true;
+      },
+
       authorize () {}
     };
     const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
