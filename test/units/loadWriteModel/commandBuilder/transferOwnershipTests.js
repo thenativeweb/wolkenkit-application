@@ -40,6 +40,30 @@ suite('transferOwnership', () => {
     });
   });
 
+  test('rejects the command if the aggregate does not exist.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const aggregate = {
+          exists () {
+            return false;
+          }
+        };
+        const command = buildCommand('planning', 'peerGroup', uuid(), 'transferOwnership', {
+          to: 'Jane Doe'
+        });
+
+        command.reject = function (reason) {
+          assert.that(reason).is.equalTo('Peer group does not exist.');
+          resolve();
+        };
+
+        transferOwnership(aggregate, command);
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  });
+
   test('rejects the command if transferOwnership throws an error.', async () => {
     await new Promise((resolve, reject) => {
       try {

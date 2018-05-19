@@ -45,6 +45,30 @@ suite('authorize', () => {
     });
   });
 
+  test('rejects the command if the aggregate does not exist.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const aggregate = {
+          exists () {
+            return false;
+          }
+        };
+        const command = buildCommand('planning', 'peerGroup', uuid(), 'authorize', {
+          to: 'Jane Doe'
+        });
+
+        command.reject = function (reason) {
+          assert.that(reason).is.equalTo('Peer group does not exist.');
+          resolve();
+        };
+
+        authorize(aggregate, command);
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  });
+
   test('rejects the command if authorize throws an error.', async () => {
     await new Promise((resolve, reject) => {
       try {
