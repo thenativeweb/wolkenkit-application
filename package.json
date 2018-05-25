@@ -16,7 +16,7 @@
       "email": "jan-hendrik.grundhoefer@thenativeweb.io"
     }
   ],
-  "main": "dist/WolkenkitApplication.js",
+  "main": "src/WolkenkitApplication.js",
   "dependencies": {
     "humanize-string": "1.0.2",
     "lodash": "4.17.10",
