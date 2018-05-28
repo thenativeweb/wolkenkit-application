@@ -11,11 +11,15 @@ suite('transferOwnership', () => {
     assert.that(transferOwnership).is.ofType('function');
   });
 
-  test('calls transferOwnership on the topic.', async () => {
+  test('calls transferOwnership on the aggregate.', async () => {
     await new Promise((resolve, reject) => {
       try {
         const newOwnerId = uuid();
-        const topic = {
+        const aggregate = {
+          exists () {
+            return true;
+          },
+
           transferOwnership (data) {
             assert.that(data.to).is.equalTo(newOwnerId);
             resolve();
@@ -29,7 +33,31 @@ suite('transferOwnership', () => {
           throw new Error(reason);
         };
 
-        transferOwnership(topic, command);
+        transferOwnership(aggregate, command);
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  });
+
+  test('rejects the command if the aggregate does not exist.', async () => {
+    await new Promise((resolve, reject) => {
+      try {
+        const aggregate = {
+          exists () {
+            return false;
+          }
+        };
+        const command = buildCommand('planning', 'peerGroup', uuid(), 'transferOwnership', {
+          to: 'Jane Doe'
+        });
+
+        command.reject = function (reason) {
+          assert.that(reason).is.equalTo('Peer group does not exist.');
+          resolve();
+        };
+
+        transferOwnership(aggregate, command);
       } catch (ex) {
         reject(ex);
       }
@@ -39,7 +67,11 @@ suite('transferOwnership', () => {
   test('rejects the command if transferOwnership throws an error.', async () => {
     await new Promise((resolve, reject) => {
       try {
-        const topic = {
+        const aggregate = {
+          exists () {
+            return true;
+          },
+
           transferOwnership () {
             throw new Error('foo');
           }
@@ -53,7 +85,7 @@ suite('transferOwnership', () => {
           resolve();
         };
 
-        transferOwnership(topic, command);
+        transferOwnership(aggregate, command);
       } catch (ex) {
         reject(ex);
       }
@@ -61,7 +93,11 @@ suite('transferOwnership', () => {
   });
 
   test('does not reject the command if transferOwnership succeeds.', async () => {
-    const topic = {
+    const aggregate = {
+      exists () {
+        return true;
+      },
+
       transferOwnership () {}
     };
     const command = buildCommand('planning', 'peerGroup', uuid(), 'transferOwnership', {
@@ -74,7 +110,7 @@ suite('transferOwnership', () => {
       wasCalled = true;
     };
 
-    transferOwnership(topic, command);
+    transferOwnership(aggregate, command);
 
     assert.that(wasCalled).is.false();
   });
