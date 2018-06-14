@@ -24,9 +24,9 @@
   },
   "devDependencies": {
     "assertthat": "1.0.0",
-    "commands-events": "1.0.1",
+    "commands-events": "1.0.3",
     "roboter": "1.0.4",
-    "uuidv4": "1.0.0"
+    "uuidv4": "1.0.1"
   },
   "repository": {
     "type": "git",
