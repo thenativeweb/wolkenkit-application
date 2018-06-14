@@ -1,6 +1,6 @@
 {
   "name": "wolkenkit-application",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "wolkenkit-application manages wolkenkit applications on disk.",
   "contributors": [
     {
