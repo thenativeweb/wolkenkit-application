@@ -25,7 +25,7 @@
   "devDependencies": {
     "assertthat": "1.0.0",
     "commands-events": "1.0.3",
-    "roboter": "1.0.4",
+    "roboter": "1.0.5",
     "uuidv4": "1.0.1"
   },
   "repository": {
