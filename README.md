@@ -10,19 +10,19 @@ $ npm install wolkenkit-application
 
 ## Quick start
 
-First you need to add a reference to wolkenkit-application in your application.
+First you need to add a reference to wolkenkit-application in your application:
 
 ```javascript
-const WolkenkitApplication = require('wolkenkit-application');
+const applicationManager = require('wolkenkit-application');
 ```
 
-Then call the `WolkenkitApplication` constructor function and specify the fully qualified directory name of a wolkenkit application.
+Then call the application manager's `load` function and specify the fully qualified directory name of the wolkenkit application you want to load:
 
 ```javascript
-const app = new WolkenkitApplication('...');
+const application = await applicationManager.load({ directory: '...' });
 ```
 
-Now you can get the application's configuration by using the `configuration.readModel`, `configuration.writeModel` and `configuration.flows` properties.
+Now you can get the application's configuration by using the `configuration.readModel`, `configuration.writeModel` and `configuration.flows` properties:
 
 ```javascript
 console.log(app.configuration.readModel);
