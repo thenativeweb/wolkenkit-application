@@ -1,5 +1,7 @@
 'use strict';
 
+var path = require('path');
+
 var requireDir = require('require-dir');
 
 var getEntries = function getEntries(_ref) {
@@ -10,6 +12,10 @@ var getEntries = function getEntries(_ref) {
   }
 
   var entries = requireDir(directory, {
+    filter: function filter(entryPath) {
+      var serverPath = path.join(directory, 'server');
+      return entryPath.startsWith(serverPath);
+    },
     recurse: true
   });
   return entries;
