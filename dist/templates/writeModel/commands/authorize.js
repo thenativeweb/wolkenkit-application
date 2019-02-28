@@ -6,8 +6,7 @@ var authorize = function authorize(aggregateInstance, command) {
   try {
     if (!aggregateInstance.exists()) {
       var aggregateName = humanizeString(command.aggregate.name);
-
-      throw new Error(aggregateName + ' does not exist.');
+      throw new Error("".concat(aggregateName, " does not exist."));
     }
 
     aggregateInstance.authorize(command.data);

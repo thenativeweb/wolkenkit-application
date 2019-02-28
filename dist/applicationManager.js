@@ -1,102 +1,81 @@
 'use strict';
 
-var _regenerator = require('babel-runtime/regenerator');
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _regenerator2 = _interopRequireDefault(_regenerator);
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var fs = require('fs'),
-    _require = require('util'),
-    promisify = _require.promisify;
-
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var Application = require('./Application'),
-    extendWriteModel = require('./extendWriteModel'),
-    loadFlows = require('./loadFlows'),
-    loadReadModel = require('./loadReadModel'),
-    loadWriteModel = require('./loadWriteModel');
+    ApplicationCache = require('./ApplicationCache'),
+    extendEntries = require('./extendEntries'),
+    getEntries = require('./getEntries'),
+    validateStructure = require('./validateStructure');
 
-var access = promisify(fs.access);
-
-var applicationCache = {};
-
+var applicationCache = new ApplicationCache();
 var applicationManager = {
   load: function () {
-    var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
-      var directory = _ref.directory;
-      var cachedApplication, flows, readModel, writeModel, extendedWriteModel, application;
-      return _regenerator2.default.wrap(function _callee$(_context) {
+    var _load = (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee(_ref) {
+      var directory, cachedApplication, entries, extendedEntries, application;
+      return _regenerator.default.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              directory = _ref.directory;
+
               if (directory) {
-                _context.next = 2;
+                _context.next = 3;
                 break;
               }
 
               throw new Error('Directory is missing.');
 
-            case 2:
-              cachedApplication = applicationCache[directory];
+            case 3:
+              cachedApplication = applicationCache.get({
+                directory: directory
+              });
 
               if (!cachedApplication) {
-                _context.next = 5;
+                _context.next = 6;
                 break;
               }
 
-              return _context.abrupt('return', cachedApplication);
+              return _context.abrupt("return", cachedApplication);
 
-            case 5:
-              _context.next = 7;
-              return access(directory, fs.constants.R_OK);
-
-            case 7:
-              _context.next = 9;
-              return loadFlows({ directory: directory });
-
-            case 9:
-              flows = _context.sent;
-              _context.next = 12;
-              return loadReadModel({ directory: directory });
+            case 6:
+              entries = getEntries({
+                directory: directory
+              });
+              validateStructure({
+                entries: entries
+              });
+              extendedEntries = extendEntries({
+                entries: entries
+              });
+              application = new Application({
+                entries: extendedEntries
+              });
+              applicationCache.set({
+                directory: directory,
+                application: application
+              });
+              return _context.abrupt("return", application);
 
             case 12:
-              readModel = _context.sent;
-              _context.next = 15;
-              return loadWriteModel({ directory: directory });
-
-            case 15:
-              writeModel = _context.sent;
-              extendedWriteModel = extendWriteModel({ writeModel: writeModel });
-              application = new Application({
-                flows: flows,
-                readModel: readModel,
-                writeModel: extendedWriteModel
-              });
-
-
-              applicationCache[directory] = application;
-
-              return _context.abrupt('return', application);
-
-            case 20:
-            case 'end':
+            case "end":
               return _context.stop();
           }
         }
-      }, _callee, this);
+      }, _callee);
     }));
 
     function load(_x) {
-      return _ref2.apply(this, arguments);
+      return _load.apply(this, arguments);
     }
 
     return load;
   }()
 };
-
 module.exports = applicationManager;
