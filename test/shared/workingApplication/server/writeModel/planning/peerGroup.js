@@ -1,7 +1,14 @@
 'use strict';
 
 const initialState = {
-  foo: 'bar'
+  foo: 'bar',
+
+  isAuthorized: {
+    commands: {
+      start: { forPublic: true },
+      join: { forAuthenticated: true }
+    }
+  }
 };
 
 const commands = {

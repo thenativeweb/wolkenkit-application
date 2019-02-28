@@ -1,17 +1,12 @@
 'use strict';
 
-const fs = require('fs'),
-      { promisify } = require('util');
-
 const Application = require('./Application'),
-      extendWriteModel = require('./extendWriteModel'),
-      loadFlows = require('./loadFlows'),
-      loadReadModel = require('./loadReadModel'),
-      loadWriteModel = require('./loadWriteModel');
+      ApplicationCache = require('./ApplicationCache'),
+      extendEntries = require('./extendEntries'),
+      getEntries = require('./getEntries'),
+      validateStructure = require('./validateStructure');
 
-const access = promisify(fs.access);
-
-const applicationCache = {};
+const applicationCache = new ApplicationCache();
 
 const applicationManager = {
   async load ({ directory }) {
@@ -19,27 +14,20 @@ const applicationManager = {
       throw new Error('Directory is missing.');
     }
 
-    const cachedApplication = applicationCache[directory];
+    const cachedApplication = applicationCache.get({ directory });
 
     if (cachedApplication) {
       return cachedApplication;
     }
 
-    await access(directory, fs.constants.R_OK);
+    const entries = getEntries({ directory });
 
-    const flows = await loadFlows({ directory }),
-          readModel = await loadReadModel({ directory }),
-          writeModel = await loadWriteModel({ directory });
+    validateStructure({ entries });
 
-    const extendedWriteModel = extendWriteModel({ writeModel });
+    const extendedEntries = extendEntries({ entries });
+    const application = new Application({ entries: extendedEntries });
 
-    const application = new Application({
-      flows,
-      readModel,
-      writeModel: extendedWriteModel
-    });
-
-    applicationCache[directory] = application;
+    applicationCache.set({ directory, application });
 
     return application;
   }
