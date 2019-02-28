@@ -197,7 +197,7 @@ const validateStructure = function ({ entries }) {
     additionalProperties: true
   });
 
-  value.validate(entries);
+  value.validate(entries, { valueName: '.', separator: '/' });
 };
 
 module.exports = validateStructure;

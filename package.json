@@ -21,7 +21,7 @@
     "humanize-string": "1.0.2",
     "lodash": "4.17.11",
     "require-dir": "1.2.0",
-    "validate-value": "4.0.0"
+    "validate-value": "5.0.1"
   },
   "devDependencies": {
     "assertthat": "2.0.3",
