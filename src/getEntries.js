@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 const requireDir = require('require-dir');
 
 const getEntries = function ({ directory }) {
@@ -7,7 +9,14 @@ const getEntries = function ({ directory }) {
     throw new Error('Directory is missing.');
   }
 
-  const entries = requireDir(directory, { recurse: true });
+  const entries = requireDir(directory, {
+    filter (entryPath) {
+      const serverPath = path.join(directory, 'server');
+
+      return entryPath.startsWith(serverPath);
+    },
+    recurse: true
+  });
 
   return entries;
 };
