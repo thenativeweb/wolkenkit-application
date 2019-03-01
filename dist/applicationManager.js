@@ -10,15 +10,16 @@ var Application = require('./Application'),
     ApplicationCache = require('./ApplicationCache'),
     extendEntries = require('./extendEntries'),
     getEntries = require('./getEntries'),
-    validateStructure = require('./validateStructure');
+    validateDirectory = require('./validateDirectory'),
+    validateEntries = require('./validateEntries');
 
 var applicationCache = new ApplicationCache();
 var applicationManager = {
-  load: function () {
-    var _load = (0, _asyncToGenerator2.default)(
+  validate: function () {
+    var _validate = (0, _asyncToGenerator2.default)(
     /*#__PURE__*/
     _regenerator.default.mark(function _callee(_ref) {
-      var directory, cachedApplication, entries, extendedEntries, application;
+      var directory;
       return _regenerator.default.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -33,24 +34,71 @@ var applicationManager = {
               throw new Error('Directory is missing.');
 
             case 3:
+              _context.next = 5;
+              return validateDirectory({
+                directory: directory
+              });
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function validate(_x) {
+      return _validate.apply(this, arguments);
+    }
+
+    return validate;
+  }(),
+  load: function () {
+    var _load = (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee2(_ref2) {
+      var directory, cachedApplication, entries, extendedEntries, application;
+      return _regenerator.default.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              directory = _ref2.directory;
+
+              if (directory) {
+                _context2.next = 3;
+                break;
+              }
+
+              throw new Error('Directory is missing.');
+
+            case 3:
               cachedApplication = applicationCache.get({
                 directory: directory
               });
 
               if (!cachedApplication) {
-                _context.next = 6;
+                _context2.next = 6;
                 break;
               }
 
-              return _context.abrupt("return", cachedApplication);
+              return _context2.abrupt("return", cachedApplication);
 
             case 6:
+              _context2.next = 8;
+              return validateDirectory({
+                directory: directory
+              });
+
+            case 8:
               entries = getEntries({
                 directory: directory
               });
-              validateStructure({
+              _context2.next = 11;
+              return validateEntries({
                 entries: entries
               });
+
+            case 11:
               extendedEntries = extendEntries({
                 entries: entries
               });
@@ -61,17 +109,17 @@ var applicationManager = {
                 directory: directory,
                 application: application
               });
-              return _context.abrupt("return", application);
+              return _context2.abrupt("return", application);
 
-            case 12:
+            case 15:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee);
+      }, _callee2);
     }));
 
-    function load(_x) {
+    function load(_x2) {
       return _load.apply(this, arguments);
     }
 
