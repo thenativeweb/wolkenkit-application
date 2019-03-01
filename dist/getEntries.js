@@ -11,14 +11,13 @@ var getEntries = function getEntries(_ref) {
     throw new Error('Directory is missing.');
   }
 
-  var entries = requireDir(directory, {
-    filter: function filter(entryPath) {
-      var serverPath = path.join(directory, 'server');
-      return entryPath.startsWith(serverPath);
-    },
+  var serverDirectory = path.join(directory, 'server');
+  var entries = requireDir(serverDirectory, {
     recurse: true
   });
-  return entries;
+  return {
+    server: entries
+  };
 };
 
 module.exports = getEntries;
