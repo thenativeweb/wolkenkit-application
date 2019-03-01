@@ -9,16 +9,10 @@ const getEntries = function ({ directory }) {
     throw new Error('Directory is missing.');
   }
 
-  const entries = requireDir(directory, {
-    filter (entryPath) {
-      const serverPath = path.join(directory, 'server');
+  const serverDirectory = path.join(directory, 'server');
+  const entries = requireDir(serverDirectory, { recurse: true });
 
-      return entryPath.startsWith(serverPath);
-    },
-    recurse: true
-  });
-
-  return entries;
+  return { server: entries };
 };
 
 module.exports = getEntries;
