@@ -4,11 +4,20 @@ const Application = require('./Application'),
       ApplicationCache = require('./ApplicationCache'),
       extendEntries = require('./extendEntries'),
       getEntries = require('./getEntries'),
-      validateStructure = require('./validateStructure');
+      validateDirectory = require('./validateDirectory'),
+      validateEntries = require('./validateEntries');
 
 const applicationCache = new ApplicationCache();
 
 const applicationManager = {
+  async validate ({ directory }) {
+    if (!directory) {
+      throw new Error('Directory is missing.');
+    }
+
+    await validateDirectory({ directory });
+  },
+
   async load ({ directory }) {
     if (!directory) {
       throw new Error('Directory is missing.');
@@ -20,9 +29,11 @@ const applicationManager = {
       return cachedApplication;
     }
 
+    await validateDirectory({ directory });
+
     const entries = getEntries({ directory });
 
-    validateStructure({ entries });
+    await validateEntries({ entries });
 
     const extendedEntries = extendEntries({ entries });
     const application = new Application({ entries: extendedEntries });

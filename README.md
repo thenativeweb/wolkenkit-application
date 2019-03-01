@@ -16,7 +16,23 @@ First you need to add a reference to wolkenkit-application in your application:
 const applicationManager = require('wolkenkit-application');
 ```
 
-Then call the application manager's `load` function and specify the fully qualified directory name of the wolkenkit application you want to load:
+### Validating an application
+
+To validate an application, call the application manager's `validate` function and specify the fully qualified directory name of the wolkenkit application you want to validate:
+
+```javascript
+try {
+  await applicationManager.validate({ directory: '...' });
+} catch (ex) {
+  // ...
+}
+```
+
+*Please note that this only validates whether the required directories and files are there, but that it doesn't say anything about whether the files have the correct code structure.*
+
+### Loading an application
+
+To load an application, call the application manager's `load` function and specify the fully qualified directory name of the wolkenkit application you want to load:
 
 ```javascript
 const application = await applicationManager.load({ directory: '...' });

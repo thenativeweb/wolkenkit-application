@@ -11,6 +11,30 @@ suite('applicationManager', () => {
     assert.that(applicationManager).is.ofType('object');
   });
 
+  suite('validate', () => {
+    test('is a function.', async () => {
+      assert.that(applicationManager.validate).is.ofType('function');
+    });
+
+    test('throws an error if the directory is missing.', async () => {
+      await assert.that(async () => {
+        await applicationManager.validate({});
+      }).is.throwingAsync('Directory is missing.');
+    });
+
+    test('throws an error if the directory does not exist.', async () => {
+      await assert.that(async () => {
+        await applicationManager.validate({ directory: path.join(__dirname, '..', 'shared', 'non-existent-application') });
+      }).is.throwingAsync(ex => ex.code === 'ENOENT');
+    });
+
+    test('does not throw an error if the directory exists.', async () => {
+      await assert.that(async () => {
+        await applicationManager.validate({ directory: path.join(__dirname, '..', 'shared', 'workingApplication') });
+      }).is.not.throwingAsync();
+    });
+  });
+
   suite('load', () => {
     let application;
 

@@ -18,6 +18,7 @@
   ],
   "main": "dist/applicationManager.js",
   "dependencies": {
+    "directory-tree": "2.2.1",
     "humanize-string": "1.0.2",
     "lodash": "4.17.11",
     "require-dir": "1.2.0",

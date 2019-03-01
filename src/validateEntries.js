@@ -2,7 +2,7 @@
 
 const Value = require('validate-value');
 
-const validateStructure = function ({ entries }) {
+const validateStructure = async function ({ entries }) {
   if (!entries) {
     throw new Error('Entries are missing.');
   }
