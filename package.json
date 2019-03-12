@@ -19,14 +19,14 @@
   "main": "dist/applicationManager.js",
   "dependencies": {
     "directory-tree": "2.2.1",
-    "humanize-string": "1.0.2",
+    "humanize-string": "2.0.0",
     "lodash": "4.17.11",
     "require-dir": "1.2.0",
     "validate-value": "5.0.1"
   },
   "devDependencies": {
     "assertthat": "2.0.3",
-    "roboter": "4.0.0"
+    "roboter": "4.0.2"
   },
   "repository": {
     "type": "git",

@@ -16,4 +16,16 @@ const projections = {
   /* eslint-enable no-unused-vars */
 };
 
-module.exports = { fields, projections };
+const transformations = {
+  /* eslint-disable no-unused-vars */
+  filter (peerGroup, query) {
+    // ...
+  },
+
+  map (peerGroup, query) {
+    // ...
+  }
+  /* eslint-enable no-unused-vars */
+};
+
+module.exports = { fields, projections, transformations };

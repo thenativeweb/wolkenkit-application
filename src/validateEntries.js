@@ -116,6 +116,15 @@ const validateStructure = async function ({ entries }) {
                         properties: {},
                         required: [],
                         additionalProperties: true
+                      },
+                      transformations: {
+                        type: 'object',
+                        properties: {
+                          filter: {},
+                          map: {}
+                        },
+                        required: [],
+                        additionalProperties: false
                       }
                     },
                     required: [ 'fields', 'projections' ],
