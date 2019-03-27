@@ -117,13 +117,21 @@ const validateStructure = async function ({ entries }) {
                         required: [],
                         additionalProperties: true
                       },
-                      transformations: {
+                      queries: {
                         type: 'object',
                         properties: {
-                          filter: {},
-                          map: {}
+                          readItem: {
+                            type: 'object',
+                            properties: {
+                              isAuthorized: {},
+                              filter: {},
+                              map: {}
+                            },
+                            required: [],
+                            additionalProperties: false
+                          }
                         },
-                        required: [],
+                        required: [ 'readItem' ],
                         additionalProperties: false
                       }
                     },
