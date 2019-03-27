@@ -24,51 +24,29 @@ const validateStructure = async function ({ entries }) {
                     properties: {
                       initialState: {
                         type: 'object',
-                        properties: {
-                          isAuthorized: {
-                            type: 'object',
-                            properties: {
-                              commands: {
-                                type: 'object',
-                                patternProperties: {
-                                  '.*': {
-                                    type: 'object',
-                                    properties: {
-                                      forPublic: { type: 'boolean' },
-                                      forAuthenticated: { type: 'boolean' }
-                                    },
-                                    required: [],
-                                    additionalProperties: false
-                                  }
-                                }
-                              },
-                              events: {
-                                type: 'object',
-                                patternProperties: {
-                                  '.*': {
-                                    type: 'object',
-                                    properties: {
-                                      forPublic: { type: 'boolean' },
-                                      forAuthenticated: { type: 'boolean' }
-                                    },
-                                    required: [],
-                                    additionalProperties: false
-                                  }
-                                }
-                              }
-                            },
-                            required: [],
-                            additionalProperties: false
-                          }
-                        },
+                        properties: {},
                         required: [],
                         additionalProperties: true
                       },
                       commands: {
                         type: 'object',
-                        properties: {},
-                        required: [],
-                        additionalProperties: true
+                        patternProperties: {
+                          '.*': {
+                            type: 'object',
+                            properties: {
+                              schema: {
+                                type: 'object',
+                                properties: {},
+                                required: [],
+                                additionalProperties: true
+                              },
+                              isAuthorized: {},
+                              handle: {}
+                            },
+                            required: [ 'isAuthorized', 'handle' ],
+                            additionalProperties: false
+                          }
+                        }
                       },
                       events: {
                         type: 'object',

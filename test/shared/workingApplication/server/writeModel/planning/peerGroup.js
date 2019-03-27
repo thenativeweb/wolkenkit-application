@@ -1,24 +1,29 @@
 'use strict';
 
 const initialState = {
-  foo: 'bar',
-
-  isAuthorized: {
-    commands: {
-      start: { forPublic: true },
-      join: { forAuthenticated: true }
-    }
-  }
+  foo: 'bar'
 };
 
 const commands = {
   /* eslint-disable no-unused-vars */
-  start (peerGroup, command) {
-    // ...
+  start: {
+    isAuthorized (peerGroup, command) {
+      return true;
+    },
+
+    handle (peerGroup, command) {
+      // ...
+    }
   },
 
-  join (peerGroup, command) {
-    // ...
+  join: {
+    isAuthorized (peerGroup, command) {
+      return true;
+    },
+
+    handle (peerGroup, command) {
+      // ...
+    }
   }
   /* eslint-enable no-unused-vars */
 };

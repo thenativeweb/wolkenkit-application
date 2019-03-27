@@ -28,7 +28,7 @@ try {
 }
 ```
 
-_Please note that this only validates whether the required directories and files are there, but that it doesn't say anything about whether the files have the correct code structure._
+*Please note that this only validates whether the required directories and files are there, but that it doesn't say anything about whether the files have the correct code structure.*
 
 ### Loading an application
 

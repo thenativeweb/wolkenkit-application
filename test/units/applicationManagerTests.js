@@ -93,23 +93,15 @@ suite('applicationManager', () => {
               peerGroup: {
                 commands: {
                   start: {},
-                  join: {},
-                  authorize: {},
-                  transferOwnership: {}
+                  join: {}
                 },
                 events: {
                   started: {},
                   joined: {},
-                  authorized: {},
-                  transferredOwnership: {},
                   startFailed: {},
                   startRejected: {},
                   joinFailed: {},
-                  joinRejected: {},
-                  authorizeFailed: {},
-                  authorizeRejected: {},
-                  transferOwnershipFailed: {},
-                  transferOwnershipRejected: {}
+                  joinRejected: {}
                 }
               }
             }
@@ -151,42 +143,22 @@ suite('applicationManager', () => {
           planning: {
             peerGroup: {
               initialState: {
-                foo: 'bar',
-
-                isAuthorized: {
-                  commands: {
-                    start: { forPublic: true, forAuthenticated: false },
-                    join: { forPublic: false, forAuthenticated: true },
-                    authorize: { forPublic: false, forAuthenticated: false },
-                    transferOwnership: { forPublic: false, forAuthenticated: false }
-                  },
-                  events: {
-                    started: { forPublic: false, forAuthenticated: false },
-                    startFailed: { forPublic: false, forAuthenticated: false },
-                    startRejected: { forPublic: false, forAuthenticated: false },
-                    joined: { forPublic: false, forAuthenticated: false },
-                    joinFailed: { forPublic: false, forAuthenticated: false },
-                    joinRejected: { forPublic: false, forAuthenticated: false },
-                    authorized: { forPublic: false, forAuthenticated: false },
-                    authorizeFailed: { forPublic: false, forAuthenticated: false },
-                    authorizeRejected: { forPublic: false, forAuthenticated: false },
-                    transferredOwnership: { forPublic: false, forAuthenticated: false },
-                    transferOwnershipFailed: { forPublic: false, forAuthenticated: false },
-                    transferOwnershipRejected: { forPublic: false, forAuthenticated: false }
-                  }
-                }
+                foo: 'bar'
               },
 
-              commands: {},
+              commands: {
+                start: {},
+                join: {}
+              },
               events: {}
             }
           }
         });
 
-        assert.that(application.writeModel.planning.peerGroup.commands.start).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.commands.join).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.commands.authorize).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.commands.transferOwnership).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.commands.start.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.commands.start.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.commands.join.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.commands.join.handle).is.ofType('function');
 
         assert.that(application.writeModel.planning.peerGroup.events.started).is.ofType('function');
         assert.that(application.writeModel.planning.peerGroup.events.startFailed).is.ofType('function');
@@ -194,12 +166,6 @@ suite('applicationManager', () => {
         assert.that(application.writeModel.planning.peerGroup.events.joined).is.ofType('function');
         assert.that(application.writeModel.planning.peerGroup.events.joinFailed).is.ofType('function');
         assert.that(application.writeModel.planning.peerGroup.events.joinRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.authorized).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.authorizeFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.authorizeRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.transferredOwnership).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.transferOwnershipFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.transferOwnershipRejected).is.ofType('function');
       });
     });
 
