@@ -4,7 +4,7 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const applicationManager = require('../../src/applicationManager');
+const applicationManager = require('../../lib/applicationManager');
 
 suite('applicationManager', () => {
   test('is an object.', async () => {
@@ -92,8 +92,17 @@ suite('applicationManager', () => {
             planning: {
               peerGroup: {
                 commands: {
-                  start: {},
-                  join: {}
+                  start: {
+                    schema: undefined
+                  },
+                  join: {
+                    schema: {
+                      type: 'object',
+                      properties: {},
+                      required: [],
+                      additionalProperties: true
+                    }
+                  }
                 },
                 events: {
                   started: {},

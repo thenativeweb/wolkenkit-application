@@ -17,6 +17,13 @@ const commands = {
   },
 
   join: {
+    schema: {
+      type: 'object',
+      properties: {},
+      required: [],
+      additionalProperties: true
+    },
+
     isAuthorized (peerGroup, command) {
       return true;
     },
