@@ -37,12 +37,32 @@ const commands = {
 
 const events = {
   /* eslint-disable no-unused-vars */
-  started (peerGroup, event) {
-    // ...
+  started: {
+    handle (peerGroup, event) {
+      // ...
+    },
+
+    isAuthorized (peerGroup, event) {
+      return true;
+    }
   },
 
-  joined (peerGroup, event) {
-    // ...
+  joined: {
+    handle (peerGroup, event) {
+      // ...
+    },
+
+    isAuthorized (peerGroup, event) {
+      return true;
+    },
+
+    filter (peerGroup, event) {
+      return true;
+    },
+
+    map (peerGroup, event) {
+      return event;
+    }
   }
   /* eslint-enable no-unused-vars */
 };

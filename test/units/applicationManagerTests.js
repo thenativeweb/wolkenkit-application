@@ -159,7 +159,14 @@ suite('applicationManager', () => {
                 start: {},
                 join: {}
               },
-              events: {}
+              events: {
+                started: {},
+                startFailed: {},
+                startRejected: {},
+                joined: {},
+                joinFailed: {},
+                joinRejected: {}
+              }
             }
           }
         });
@@ -169,12 +176,20 @@ suite('applicationManager', () => {
         assert.that(application.writeModel.planning.peerGroup.commands.join.isAuthorized).is.ofType('function');
         assert.that(application.writeModel.planning.peerGroup.commands.join.handle).is.ofType('function');
 
-        assert.that(application.writeModel.planning.peerGroup.events.started).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.startFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.startRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.joined).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.joinFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.joinRejected).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.started.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.started.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.startFailed.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.startFailed.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.startRejected.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.startRejected.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joined.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joined.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joined.filter).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joined.map).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joinFailed.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joinFailed.isAuthorized).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joinRejected.handle).is.ofType('function');
+        assert.that(application.writeModel.planning.peerGroup.events.joinRejected.isAuthorized).is.ofType('function');
       });
     });
 
