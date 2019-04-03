@@ -17,14 +17,6 @@ const projections = {
 };
 
 const queries = {
-  readList: {
-    /* eslint-disable no-unused-vars */
-    isAuthorized (peerGroup, query) {
-      // ...
-    }
-    /* eslint-enable no-unused-vars */
-  },
-
   readItem: {
     /* eslint-disable no-unused-vars */
     isAuthorized (peerGroup, query) {
