@@ -90,19 +90,15 @@ var applicationManager = {
               });
 
             case 8:
-              _context2.next = 10;
-              return getEntries({
+              entries = getEntries({
                 directory: directory
               });
-
-            case 10:
-              entries = _context2.sent;
-              _context2.next = 13;
+              _context2.next = 11;
               return validateEntries({
                 entries: entries
               });
 
-            case 13:
+            case 11:
               extendedEntries = extendEntries({
                 entries: entries
               });
@@ -115,7 +111,7 @@ var applicationManager = {
               });
               return _context2.abrupt("return", application);
 
-            case 17:
+            case 15:
             case "end":
               return _context2.stop();
           }
