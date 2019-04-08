@@ -7,8 +7,6 @@ const validateStructure = async function ({ entries }) {
     throw new Error('Entries are missing.');
   }
 
-  console.log(entries)
-
   const value = new Value({
     type: 'object',
     properties: {

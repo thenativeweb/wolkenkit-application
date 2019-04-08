@@ -4,21 +4,22 @@ const fs = require('fs'),
       path = require('path'),
       { promisify } = require('util');
 
-const access = promisify(fs.access);
-
 const directoryTree = require('directory-tree');
 
-const MAX_TREE_TRANSFORM_DEPTH = {
+const access = promisify(fs.access);
+
+const nodeDepthLimits = {
   // flows/flow[.js, /index.js]
   flows: 1,
 
-  // readModel/api/projection[.js, /index.js]
+  // readModel/lists/model[.js, /index.js]
   readModel: 2,
 
   // writeModel/context/aggregate[.js, /index.js]
   writeModel: 2
 };
-const transformTree = function (nodes, maxDepth = 0, currentDepth = 0) {
+
+const transformTree = function (nodes, depthLimit = 0, currentDepth = 0) {
   if (!nodes) {
     throw new Error('Nodes are missing.');
   }
@@ -27,22 +28,28 @@ const transformTree = function (nodes, maxDepth = 0, currentDepth = 0) {
 
   for (const node of nodes) {
     const name = path.basename(node.name, '.js');
+    const subtree = node.children;
 
-    const maxTreeTransformDepth = MAX_TREE_TRANSFORM_DEPTH[name];
+    if (subtree) {
+      const nodeDepthLimit = nodeDepthLimits[name];
 
-    if (maxTreeTransformDepth) {
-      result[name] = transformTree(node.children, maxTreeTransformDepth, 1);
-    } else if (node.children) {
-      if (maxDepth) {
-        if (currentDepth + 1 <= maxDepth) {
-          result[name] = transformTree(node.children, maxDepth, currentDepth + 1);
+      if (nodeDepthLimit) {
+        // Get the node's subtree but don't go deeper than nodeDepthLimit
+        result[name] = transformTree(subtree, nodeDepthLimit, 1);
+      } else if (depthLimit) {
+        if (currentDepth + 1 <= depthLimit) {
+          // We can go one level deeper
+          result[name] = transformTree(subtree, depthLimit, currentDepth + 1);
         } else {
+          // Max depth has been reached
           result[name] = {};
         }
       } else {
-        result[name] = transformTree(node.children);
+        // Get the node's sub-tree w/o depth limit
+        result[name] = transformTree(subtree);
       }
     } else {
+      // Else the current
       result[name] = {};
     }
   }
