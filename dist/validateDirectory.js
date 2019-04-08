@@ -6,55 +6,9 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var fs = require('fs'),
-    path = require('path'),
-    _require = require('util'),
-    promisify = _require.promisify;
+var Value = require('validate-value');
 
-var access = promisify(fs.access);
-
-var directoryTree = require('directory-tree'),
-    Value = require('validate-value');
-
-var transformTree = function transformTree(nodes) {
-  if (!nodes) {
-    throw new Error('Nodes are missing.');
-  }
-
-  var result = {};
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = nodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var node = _step.value;
-      var name = path.basename(node.name, '.js');
-
-      if (!node.children) {
-        result[name] = {};
-        continue;
-      }
-
-      result[name] = transformTree(node.children);
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return result;
-};
+var getDirectoryTree = require('./getDirectoryTree');
 
 var validateDirectory =
 /*#__PURE__*/
@@ -62,7 +16,7 @@ function () {
   var _ref2 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
   _regenerator.default.mark(function _callee(_ref) {
-    var directory, serverDirectory, tree, transformedTree, value;
+    var directory, directoryTree, value;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -77,15 +31,13 @@ function () {
             throw new Error('Directory is missing.');
 
           case 3:
-            serverDirectory = path.join(directory, 'server');
-            _context.next = 6;
-            return access(serverDirectory, fs.constants.R_OK);
-
-          case 6:
-            tree = directoryTree(serverDirectory, {
-              extensions: /\.js$/
+            _context.next = 5;
+            return getDirectoryTree({
+              directory: directory
             });
-            transformedTree = transformTree([tree]);
+
+          case 5:
+            directoryTree = _context.sent;
             value = new Value({
               type: 'object',
               properties: {
@@ -149,12 +101,12 @@ function () {
               required: ['server'],
               additionalProperties: true
             });
-            value.validate(transformedTree, {
+            value.validate(directoryTree, {
               valueName: '.',
               separator: '/'
             });
 
-          case 10:
+          case 8:
           case "end":
             return _context.stop();
         }

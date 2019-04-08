@@ -31,7 +31,7 @@ const applicationManager = {
 
     await validateDirectory({ directory });
 
-    const entries = getEntries({ directory });
+    const entries = await getEntries({ directory });
 
     await validateEntries({ entries });
 

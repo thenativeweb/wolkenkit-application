@@ -29,6 +29,7 @@ function () {
             throw new Error('Entries are missing.');
 
           case 3:
+            console.log(entries);
             value = new Value({
               type: 'object',
               properties: {
@@ -249,7 +250,7 @@ function () {
               separator: '/'
             });
 
-          case 5:
+          case 6:
           case "end":
             return _context.stop();
         }
