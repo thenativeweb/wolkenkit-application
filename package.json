@@ -14,18 +14,21 @@
     {
       "name": "Jan-Hendrik Grundhöfer",
       "email": "jan-hendrik.grundhoefer@thenativeweb.io"
+    },
+    {
+      "name": "Jimmy Beaudoin",
+      "email": "jbeaudoin11@gmail.com"
     }
   ],
   "main": "lib/applicationManager.js",
   "dependencies": {
     "directory-tree": "2.2.1",
     "lodash": "4.17.11",
-    "require-dir": "1.2.0",
     "validate-value": "5.0.2"
   },
   "devDependencies": {
     "assertthat": "2.0.3",
-    "roboter": "4.0.3"
+    "roboter": "4.0.4"
   },
   "repository": {
     "type": "git",
