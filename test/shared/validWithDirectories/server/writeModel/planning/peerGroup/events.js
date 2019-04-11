@@ -13,6 +13,19 @@ const events = {
   },
 
   joined: {
+    documentation: `
+      # Having joined a peer group
+
+      The \`joined\` event notifies you when a participant joined a peer group.
+    `,
+
+    schema: {
+      type: 'object',
+      properties: {},
+      required: [],
+      additionalProperties: true
+    },
+
     handle (peerGroup, event) {
       // ...
     },

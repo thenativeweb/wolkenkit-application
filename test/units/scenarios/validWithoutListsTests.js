@@ -18,9 +18,11 @@ suite('validWithoutLists', () => {
           peerGroup: {
             commands: {
               start: {
+                documentation: undefined,
                 schema: undefined
               },
               join: {
+                documentation: '# Joining a peer group\n\nThe `join` command lets you join a peer group.',
                 schema: {
                   type: 'object',
                   properties: {},
@@ -30,12 +32,63 @@ suite('validWithoutLists', () => {
               }
             },
             events: {
-              started: {},
-              joined: {},
-              startFailed: {},
-              startRejected: {},
-              joinFailed: {},
-              joinRejected: {}
+              started: {
+                documentation: undefined,
+                schema: undefined
+              },
+              joined: {
+                documentation: '# Having joined a peer group\n\nThe `joined` event notifies you when a participant joined a peer group.',
+                schema: {
+                  type: 'object',
+                  properties: {},
+                  required: [],
+                  additionalProperties: true
+                }
+              },
+              startFailed: {
+                documentation: undefined,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    reason: { type: 'string' }
+                  },
+                  required: [ 'reason' ],
+                  additionalProperties: false
+                }
+              },
+              startRejected: {
+                documentation: undefined,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    reason: { type: 'string' }
+                  },
+                  required: [ 'reason' ],
+                  additionalProperties: false
+                }
+              },
+              joinFailed: {
+                documentation: undefined,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    reason: { type: 'string' }
+                  },
+                  required: [ 'reason' ],
+                  additionalProperties: false
+                }
+              },
+              joinRejected: {
+                documentation: undefined,
+                schema: {
+                  type: 'object',
+                  properties: {
+                    reason: { type: 'string' }
+                  },
+                  required: [ 'reason' ],
+                  additionalProperties: false
+                }
+              }
             }
           }
         }

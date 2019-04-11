@@ -13,6 +13,12 @@ const commands = {
   },
 
   join: {
+    documentation: `
+      # Joining a peer group
+
+      The \`join\` command lets you join a peer group.
+    `,
+
     schema: {
       type: 'object',
       properties: {},

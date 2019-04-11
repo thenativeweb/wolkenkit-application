@@ -25,6 +25,7 @@
     "directory-tree": "2.2.1",
     "lodash": "4.17.11",
     "require-dir": "1.2.0",
+    "strip-indent": "2.0.0",
     "validate-value": "5.0.2"
   },
   "devDependencies": {

@@ -17,6 +17,12 @@ const commands = {
   },
 
   join: {
+    documentation: `
+      # Joining a peer group
+
+      The \`join\` command lets you join a peer group.
+    `,
+
     schema: {
       type: 'object',
       properties: {},
@@ -48,6 +54,19 @@ const events = {
   },
 
   joined: {
+    documentation: `
+      # Having joined a peer group
+
+      The \`joined\` event notifies you when a participant joined a peer group.
+    `,
+
+    schema: {
+      type: 'object',
+      properties: {},
+      required: [],
+      additionalProperties: true
+    },
+
     handle (peerGroup, event) {
       // ...
     },
