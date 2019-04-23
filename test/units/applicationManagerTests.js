@@ -4,7 +4,7 @@ const path = require('path');
 
 const assert = require('assertthat');
 
-const applicationManager = require('../../src/applicationManager');
+const applicationManager = require('../../lib/applicationManager');
 
 suite('applicationManager', () => {
   test('is an object.', async () => {
@@ -30,20 +30,12 @@ suite('applicationManager', () => {
 
     test('does not throw an error if the directory exists.', async () => {
       await assert.that(async () => {
-        await applicationManager.validate({ directory: path.join(__dirname, '..', 'shared', 'workingApplication') });
+        await applicationManager.validate({ directory: path.join(__dirname, '..', 'shared', 'valid') });
       }).is.not.throwingAsync();
     });
   });
 
   suite('load', () => {
-    let application;
-
-    suiteSetup(async () => {
-      application = await applicationManager.load({
-        directory: path.join(__dirname, '..', 'shared', 'workingApplication')
-      });
-    });
-
     test('is a function.', async () => {
       assert.that(applicationManager.load).is.ofType('function');
     });
@@ -62,10 +54,10 @@ suite('applicationManager', () => {
 
     test('returns the same instance if called twice with the same application directory.', async () => {
       const application1 = await applicationManager.load({
-        directory: path.join(__dirname, '..', 'shared', 'workingApplication')
+        directory: path.join(__dirname, '..', 'shared', 'valid')
       });
       const application2 = await applicationManager.load({
-        directory: path.join(__dirname, '..', 'shared', 'workingApplication')
+        directory: path.join(__dirname, '..', 'shared', 'valid')
       });
 
       assert.that(application1).is.sameAs(application2);
@@ -73,252 +65,11 @@ suite('applicationManager', () => {
 
     suite('configuration', () => {
       test('is an object.', async () => {
+        const application = await applicationManager.load({
+          directory: path.join(__dirname, '..', 'shared', 'valid')
+        });
+
         assert.that(application.configuration).is.ofType('object');
-      });
-
-      suite('readModel', () => {
-        test('returns the read model configuration.', async () => {
-          assert.that(application.configuration.readModel).is.equalTo({
-            lists: {
-              folderList: {},
-              peerGroups: {}
-            }
-          });
-        });
-      });
-
-      suite('writeModel', () => {
-        test('returns the write model configuration.', async () => {
-          assert.that(application.configuration.writeModel).is.equalTo({
-            planning: {
-              folderAggregate: {
-                commands: {
-                  start: {},
-                  join: {},
-                  authorize: {},
-                  transferOwnership: {}
-                },
-                events: {
-                  started: {},
-                  joined: {},
-                  authorized: {},
-                  transferredOwnership: {},
-                  startFailed: {},
-                  startRejected: {},
-                  joinFailed: {},
-                  joinRejected: {},
-                  authorizeFailed: {},
-                  authorizeRejected: {},
-                  transferOwnershipFailed: {},
-                  transferOwnershipRejected: {}
-                }
-              },
-              peerGroup: {
-                commands: {
-                  start: {},
-                  join: {},
-                  authorize: {},
-                  transferOwnership: {}
-                },
-                events: {
-                  started: {},
-                  joined: {},
-                  authorized: {},
-                  transferredOwnership: {},
-                  startFailed: {},
-                  startRejected: {},
-                  joinFailed: {},
-                  joinRejected: {},
-                  authorizeFailed: {},
-                  authorizeRejected: {},
-                  transferOwnershipFailed: {},
-                  transferOwnershipRejected: {}
-                }
-              }
-            }
-          });
-        });
-      });
-
-      suite('flows', () => {
-        test('returns the flows configuration.', async () => {
-          assert.that(application.configuration.flows).is.equalTo({
-            folderFlow: {},
-            stateful: {},
-            stateless: {}
-          });
-        });
-      });
-    });
-
-    suite('readModel', () => {
-      test('returns the read model with source code.', async () => {
-        assert.that(application.readModel).is.atLeast({
-          lists: {
-            folderList: {
-              fields: {
-                foo: { initialState: '' }
-              },
-              projections: {}
-            },
-            peerGroups: {
-              fields: {
-                foo: { initialState: '' }
-              },
-              projections: {}
-            }
-          }
-        });
-
-        assert.that(application.readModel.lists.folderList.projections['planning.folderAggregate.started']).is.ofType('function');
-        assert.that(application.readModel.lists.folderList.projections['planning.folderAggregate.joined']).is.ofType('function');
-
-        assert.that(application.readModel.lists.peerGroups.projections['planning.peerGroup.started']).is.ofType('function');
-        assert.that(application.readModel.lists.peerGroups.projections['planning.peerGroup.joined']).is.ofType('function');
-      });
-    });
-
-    suite('writeModel', () => {
-      test('returns the write model with source code.', async () => {
-        assert.that(application.writeModel).is.atLeast({
-          planning: {
-            folderAggregate: {
-              initialState: {
-                foo: 'bar',
-
-                isAuthorized: {
-                  commands: {
-                    start: { forPublic: true, forAuthenticated: false },
-                    join: { forPublic: false, forAuthenticated: true },
-                    authorize: { forPublic: false, forAuthenticated: false },
-                    transferOwnership: { forPublic: false, forAuthenticated: false }
-                  },
-                  events: {
-                    started: { forPublic: false, forAuthenticated: false },
-                    startFailed: { forPublic: false, forAuthenticated: false },
-                    startRejected: { forPublic: false, forAuthenticated: false },
-                    joined: { forPublic: false, forAuthenticated: false },
-                    joinFailed: { forPublic: false, forAuthenticated: false },
-                    joinRejected: { forPublic: false, forAuthenticated: false },
-                    authorized: { forPublic: false, forAuthenticated: false },
-                    authorizeFailed: { forPublic: false, forAuthenticated: false },
-                    authorizeRejected: { forPublic: false, forAuthenticated: false },
-                    transferredOwnership: { forPublic: false, forAuthenticated: false },
-                    transferOwnershipFailed: { forPublic: false, forAuthenticated: false },
-                    transferOwnershipRejected: { forPublic: false, forAuthenticated: false }
-                  }
-                }
-              },
-
-              commands: {},
-              events: {}
-            },
-            peerGroup: {
-              initialState: {
-                foo: 'bar',
-
-                isAuthorized: {
-                  commands: {
-                    start: { forPublic: true, forAuthenticated: false },
-                    join: { forPublic: false, forAuthenticated: true },
-                    authorize: { forPublic: false, forAuthenticated: false },
-                    transferOwnership: { forPublic: false, forAuthenticated: false }
-                  },
-                  events: {
-                    started: { forPublic: false, forAuthenticated: false },
-                    startFailed: { forPublic: false, forAuthenticated: false },
-                    startRejected: { forPublic: false, forAuthenticated: false },
-                    joined: { forPublic: false, forAuthenticated: false },
-                    joinFailed: { forPublic: false, forAuthenticated: false },
-                    joinRejected: { forPublic: false, forAuthenticated: false },
-                    authorized: { forPublic: false, forAuthenticated: false },
-                    authorizeFailed: { forPublic: false, forAuthenticated: false },
-                    authorizeRejected: { forPublic: false, forAuthenticated: false },
-                    transferredOwnership: { forPublic: false, forAuthenticated: false },
-                    transferOwnershipFailed: { forPublic: false, forAuthenticated: false },
-                    transferOwnershipRejected: { forPublic: false, forAuthenticated: false }
-                  }
-                }
-              },
-
-              commands: {},
-              events: {}
-            }
-          }
-        });
-
-        assert.that(application.writeModel.planning.folderAggregate.commands.start).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.commands.join).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.commands.authorize).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.commands.transferOwnership).is.ofType('function');
-
-        assert.that(application.writeModel.planning.folderAggregate.events.started).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.startFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.startRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.joined).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.joinFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.joinRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.authorized).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.authorizeFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.authorizeRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.transferredOwnership).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.transferOwnershipFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.folderAggregate.events.transferOwnershipRejected).is.ofType('function');
-
-        assert.that(application.writeModel.planning.peerGroup.commands.start).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.commands.join).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.commands.authorize).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.commands.transferOwnership).is.ofType('function');
-
-        assert.that(application.writeModel.planning.peerGroup.events.started).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.startFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.startRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.joined).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.joinFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.joinRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.authorized).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.authorizeFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.authorizeRejected).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.transferredOwnership).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.transferOwnershipFailed).is.ofType('function');
-        assert.that(application.writeModel.planning.peerGroup.events.transferOwnershipRejected).is.ofType('function');
-      });
-    });
-
-    suite('flows', () => {
-      test('returns the flows with source code.', async () => {
-        assert.that(application.flows).is.atLeast({
-          folderFlow: {
-            reactions: {}
-          },
-          stateful: {
-            identity: {},
-            initialState: {
-              is: 'pristine'
-            },
-            transitions: {
-              pristine: {}
-            },
-            reactions: {
-              pristine: {}
-            }
-          },
-          stateless: {
-            reactions: {}
-          }
-        });
-
-        assert.that(application.flows.folderFlow.reactions['planning.folderAggregate.started']).is.ofType('function');
-        assert.that(application.flows.folderFlow.reactions['planning.folderAggregate.joined']).is.ofType('function');
-
-        assert.that(application.flows.stateless.reactions['planning.peerGroup.started']).is.ofType('function');
-        assert.that(application.flows.stateless.reactions['planning.peerGroup.joined']).is.ofType('function');
-
-        assert.that(application.flows.stateful.identity['planning.peerGroup.started']).is.ofType('function');
-        assert.that(application.flows.stateful.identity['planning.peerGroup.joined']).is.ofType('function');
-        assert.that(application.flows.stateful.transitions.pristine['planning.peerGroup.started']).is.ofType('function');
-        assert.that(application.flows.stateful.transitions.pristine['planning.peerGroup.joined']).is.ofType('function');
-        assert.that(application.flows.stateful.reactions.pristine['another-state']).is.ofType('function');
       });
     });
   });

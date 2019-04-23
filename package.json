@@ -20,17 +20,17 @@
       "email": "jbeaudoin11@gmail.com"
     }
   ],
-  "main": "dist/applicationManager.js",
+  "main": "lib/applicationManager.js",
   "dependencies": {
     "directory-tree": "2.2.1",
-    "humanize-string": "2.0.0",
     "lodash": "4.17.11",
     "require-dir": "1.2.0",
-    "validate-value": "5.0.1"
+    "strip-indent": "2.0.0",
+    "validate-value": "5.0.2"
   },
   "devDependencies": {
     "assertthat": "2.0.3",
-    "roboter": "4.0.2"
+    "roboter": "4.0.4"
   },
   "repository": {
     "type": "git",
