@@ -23,7 +23,7 @@
   "main": "lib/applicationManager.js",
   "dependencies": {
     "directory-tree": "2.2.1",
-    "lodash": "4.17.11",
+    "lodash": "4.17.21",
     "require-dir": "1.2.0",
     "strip-indent": "2.0.0",
     "validate-value": "5.0.2"
